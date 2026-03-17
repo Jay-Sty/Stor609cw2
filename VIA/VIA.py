@@ -6,6 +6,9 @@ Created on Tue Mar 17 09:58:26 2026
 @author: stylesj
 """
 
+#609 cw 2
+#Value Iteration Algorithms
+
 import numpy as np
 
 

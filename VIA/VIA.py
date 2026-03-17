@@ -84,3 +84,50 @@ policy, value_function = value_iteration(states, actions, transition_model, rewa
 
 print("Optimal Policy:", policy)
 print("Value Function:", value_function)
+
+
+###############################################
+##example 2 (ex9.27 from of Artificial Intelligence: Foundations and Computational Agents 2nd edition)
+
+
+states = ["healthy", "sick"]
+actions = ["relax", "party"]
+
+def transition_model(s, a, s_next):
+    if s == 'healthy' and a == 'relax':
+        return 0.95 if s_next == 'healthy' else 0.05
+    elif s == 'healthy' and a == 'party':
+        return 0.7 if s_next == 'healthy' else 0.3
+    elif s == 'sick' and a == 'relax':
+        return 0.5 if s_next == 'healthy' else 0.5
+    elif s == 'sick' and a == 'party':
+        return 0.1 if s_next == 'healthy' else 0.9
+    return 0
+
+def reward_function(s, a, s_next):
+    if s == 'healthy' and a == 'relax':
+        return 7
+    elif s == 'healthy' and a == 'party':
+        return 10
+    elif s == 'sick' and a == 'relax':
+        return 0
+    elif s == 'sick' and a == 'party':
+        return 2
+    return 0
+
+#run algorithm
+policy, value_function = value_iteration(states, actions, transition_model, reward_function, gamma, epsilon)
+
+print("Optimal Policy:", policy)
+print("Value Function:", value_function)
+
+
+######################################################
+##
+
+
+
+
+
+
+

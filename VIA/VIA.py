@@ -89,41 +89,55 @@ print("Value Function:", value_function)
 ###############################################
 ##example 2 (ex9.27 from of Artificial Intelligence: Foundations and Computational Agents 2nd edition)
 
+def sam_weekend_mdp():
+    #Define States and actions
+    states = ['healthy', 'sick']
+    actions = ['relax', 'party']
 
-states = ["healthy", "sick"]
-actions = ["relax", "party"]
-
-def transition_model(s, a, s_next):
-    if s == 'healthy' and a == 'relax':
-        return 0.95 if s_next == 'healthy' else 0.05
-    elif s == 'healthy' and a == 'party':
-        return 0.7 if s_next == 'healthy' else 0.3
-    elif s == 'sick' and a == 'relax':
-        return 0.5 if s_next == 'healthy' else 0.5
-    elif s == 'sick' and a == 'party':
-        return 0.1 if s_next == 'healthy' else 0.9
-    return 0
-
-def reward_function(s, a, s_next):
-    if s == 'healthy' and a == 'relax':
-        return 7
-    elif s == 'healthy' and a == 'party':
-        return 10
-    elif s == 'sick' and a == 'relax':
+    #Transition function
+    def transition_model(s, a, s_next):
+        if s == 'healthy' and a == 'relax':
+            return 0.95 if s_next == 'healthy' else 0.05
+        elif s == 'healthy' and a == 'party':
+            return 0.7 if s_next == 'healthy' else 0.3
+        elif s == 'sick' and a == 'relax':
+            return 0.5 if s_next == 'healthy' else 0.5
+        elif s == 'sick' and a == 'party':
+            return 0.1 if s_next == 'healthy' else 0.9
         return 0
-    elif s == 'sick' and a == 'party':
-        return 2
-    return 0
 
-#run algorithm
-policy, value_function = value_iteration(states, actions, transition_model, reward_function, gamma, epsilon)
+    #Reward function
+    def reward_function(s, a, s_next):
+        if s == 'healthy' and a == 'relax':
+            return 7
+        elif s == 'healthy' and a == 'party':
+            return 10
+        elif s == 'sick' and a == 'relax':
+            return 0
+        elif s == 'sick' and a == 'party':
+            return 2
+        return 0
 
-print("Optimal Policy:", policy)
-print("Value Function:", value_function)
+    #Discount factor and convergence threshold
+    gamma = 0.9
+    epsilon = 0.01
+
+    # Run value iteration
+    policy, value_function = value_iteration(
+        states, actions, transition_model, reward_function, gamma, epsilon
+    )
+
+    return policy, value_function
+
+if __name__ == "__main__":
+    #only run if script run directly (not imported)
+    policy, value_function = sam_weekend_mdp()
+    print("Optimal Policy:", policy)
+    print("Value Function:", value_function)
 
 
 ######################################################
-##
+
 
 
 

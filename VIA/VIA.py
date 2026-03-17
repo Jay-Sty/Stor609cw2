@@ -16,7 +16,7 @@ import numpy as np
 
 
 #define value iteration process
-def value_iteration(S, A, P, R, gamma = 0.9, epsilon = 0.01):
+def value_iteration(S, A, P, R, gamma = 1, epsilon = 0.001, max_iterations = 10000):
     """
     Perform Value Iteration for a given MDP.
 
@@ -39,9 +39,11 @@ def value_iteration(S, A, P, R, gamma = 0.9, epsilon = 0.01):
     policy: dictionary of optimal action for each state
     """
     V = {s: 0 for s in S}
+    iteration = 0
     
     while True:
         delta = 0
+        iteration += 1
         for s in S:
             #Check if the state is effectively terminal
             has_outgoing = any(P(s, a, s_next) > 0 for a in A for s_next in S)
@@ -52,6 +54,9 @@ def value_iteration(S, A, P, R, gamma = 0.9, epsilon = 0.01):
             V[s] = max(sum(P(s, a, s_next) * (R(s, a, s_next) + gamma * V[s_next]) for s_next in S) for a in A)
             delta = max(delta, abs(v - V[s]))
         if delta < epsilon:
+            break
+        if iteration >= max_iterations:
+            print(f"Warning: reached maximum iterations ({max_iterations}) without full convergence.")
             break
     policy = {}
     for s in S:
@@ -124,9 +129,10 @@ def sam_weekend_mdp():
         return R_dict[s][a]
 
     gamma = 0.9
-    epsilon = 0.01
+    epsilon = 0.0001
+    max_iterations = 1000
 
-    policy, value_function = value_iteration(states, actions, P, R, gamma, epsilon)
+    policy, value_function = value_iteration(states, actions, P, R, gamma, epsilon, max_iterations)
     return policy, value_function
 
 if __name__ == "__main__":
@@ -179,10 +185,10 @@ def grid_world_mdp():
         return R_dict.get((s, a, s_next), 0)
         
     
-    gamma = 0.9
-    epsilon = 0.01
+    #gamma = 0.9
+    #epsilon = 0.01
 
-    policy, value_function = value_iteration(states, actions, P, R, gamma, epsilon)
+    policy, value_function = value_iteration(states, actions, P, R)#, gamma, epsilon)
     return policy, value_function
 
 if __name__ == "__main__":

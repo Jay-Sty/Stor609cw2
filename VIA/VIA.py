@@ -18,7 +18,7 @@ from typing import Callable, List, Any
 #define value iteration process
 def value_iteration(S: List[Any], A: List[Any], P: Callable[ [Any,Any,Any], float],
                     R: Callable[ [Any,Any,Any], float], gamma: float = 0.9,
-                    epsilon: float = 0.001, max_iterations: int = 10000) -> tuple[dict, dict]:
+                    epsilon: float = 0.001, max_iterations: int = 10000) -> tuple[dict, dict, list]:
     """
     Perform Value Iteration for a given MDP.
 
@@ -42,6 +42,7 @@ def value_iteration(S: List[Any], A: List[Any], P: Callable[ [Any,Any,Any], floa
     """
     V = {s: 0 for s in S}
     iteration = 0
+    delta_list = []
     
     while True:
         delta = 0
@@ -55,6 +56,7 @@ def value_iteration(S: List[Any], A: List[Any], P: Callable[ [Any,Any,Any], floa
             v = V[s]
             V[s] = max(sum(P(s, a, s_next) * (R(s, a, s_next) + gamma * V[s_next]) for s_next in S) for a in A)
             delta = max(delta, abs(v - V[s]))
+        delta_list.append(delta)
         if delta < epsilon:
             break
         if iteration >= max_iterations:
@@ -69,7 +71,7 @@ def value_iteration(S: List[Any], A: List[Any], P: Callable[ [Any,Any,Any], floa
         policy[s] = max(A, 
                         key=lambda a: sum(
                           P(s, a, s_next) *(R(s, a, s_next) + gamma * V[s_next]) for s_next in S))
-    return policy, V
+    return policy, V, delta_list
 
 
 

@@ -39,7 +39,7 @@ class TestVIA(unittest.TestCase):
         }.get((s,a,s_next),0)
 
     def test_values_and_policy(self):
-        policy, V = value_iteration(self.states, self.actions, self.P, self.R, gamma = 0.9, epsilon = 0.001, max_iterations = 10000)
+        policy, V, delta_list = value_iteration(self.states, self.actions, self.P, self.R, gamma = 0.9, epsilon = 0.001, max_iterations = 10000)
         # Healthy state should be more valuable than sick
         self.assertGreater(V['healthy'], V['sick'])
         # Healthy should prefer party

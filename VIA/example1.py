@@ -30,7 +30,7 @@ gamma = 0.9
 epsilon = 0.001
 
 #run algorithm
-policy, value_function = value_iteration(states, actions, transition_model, reward_function, gamma, epsilon)
+policy, value_function, delta_list = value_iteration(states, actions, transition_model, reward_function, gamma, epsilon)
 
 print("Optimal Policy:", policy)
 print("Value Function:", value_function)

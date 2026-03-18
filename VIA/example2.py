@@ -39,7 +39,7 @@ def sam_weekend_mdp():
     epsilon = 0.05
     max_iterations = 10000
 
-    policy, value_function = value_iteration(states, actions, P, R, gamma, epsilon, max_iterations)
+    policy, value_function, delta_list = value_iteration(states, actions, P, R, gamma, epsilon, max_iterations)
     return policy, value_function
 
 if __name__ == "__main__":

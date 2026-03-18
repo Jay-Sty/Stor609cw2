@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "Value Iteration Algorithm"
+version = "0.0.0"
+maintainers = [
+  { name="Jay Styles", email="j.styles@lancaster.ac.uk" },
+]
+authors = [
+  { name="Jay Styles", email="j.styles@lancaster.ac.uk"},
+]
+description = "Value iteration algorithm for solving MDPs"
+requires-python = ">=3.13.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "numpy"
+]
+
+[project.urls]
+homepage = "<website URL>"

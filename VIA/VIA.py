@@ -128,9 +128,9 @@ def sam_weekend_mdp():
     def R(s, a, s_next):
         return R_dict[s][a]
 
-    gamma = 0.9
+    gamma = 0.99
     epsilon = 0.0001
-    max_iterations = 1000
+    max_iterations = 100000
 
     policy, value_function = value_iteration(states, actions, P, R, gamma, epsilon, max_iterations)
     return policy, value_function

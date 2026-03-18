@@ -16,7 +16,7 @@ import numpy as np
 
 
 #define value iteration process
-def value_iteration(S, A, P, R, gamma = 1, epsilon = 0.001, max_iterations = 10000):
+def value_iteration(S, A, P, R, gamma = 0.9, epsilon = 0.001, max_iterations = 10000):
     """
     Perform Value Iteration for a given MDP.
 

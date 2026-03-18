@@ -10,13 +10,15 @@ Created on Tue Mar 17 09:58:26 2026
 #Value Iteration Algorithms
 
 import numpy as np
-
+from typing import Callable, List, Any
 
 
 
 
 #define value iteration process
-def value_iteration(S, A, P, R, gamma = 0.9, epsilon = 0.001, max_iterations = 10000):
+def value_iteration(S: List[Any], A: List[Any], P: Callable[ [Any,Any,Any], float],
+                    R: Callable[ [Any,Any,Any], float], gamma: float = 0.9,
+                    epsilon: float = 0.001, max_iterations: int = 10000) -> tuple[dict, dict]:
     """
     Perform Value Iteration for a given MDP.
 

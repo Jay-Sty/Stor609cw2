@@ -51,7 +51,7 @@ def grid_world_mdp():
         
     
     gamma = 0.9
-    epsilon = 1e-6
+    epsilon = 0.05#1e-6
 
     policy, value_function = value_iteration(states, actions, P, R, gamma, epsilon)
     return policy, value_function

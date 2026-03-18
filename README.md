@@ -10,8 +10,14 @@ There are three examples:
 
 ## How to Use
 
+To install package from github:
+
+python -m pip install 'git+https://github.com/Jay-Sty/Stor609cw2'
 
 ## Detail of value_iteration function
+
+The main function is value_iterations which takes list of states and actions; the probabailities and rewards and functions (note that some examples use these as dictionaries but this must be wrapped in a function); gamma value; and finally the convergence specification and max number of iterations.
+The function returns the optimals policy, the optimal value of each state and list of convergence differences (this is used for plotting convergence)
 
 
 ## Psudo Code

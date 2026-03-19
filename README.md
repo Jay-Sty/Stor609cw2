@@ -12,7 +12,7 @@ There are three examples:
 
 To install package from github:
 
-(may need to start python: source~/start-pyenv)
+(may need to start python: source ~/start-pyenv)
 
 python -m pip install 'git+https://github.com/Jay-Sty/Stor609cw2'
 

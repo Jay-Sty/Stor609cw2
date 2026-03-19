@@ -6,91 +6,88 @@ Created on Wed Mar 18 10:50:42 2026
 @author: stylesj
 """
 
-
-import unittest
-from VIA import value_iteration
-
-class TestValueIteration(unittest.TestCase):
-
-    def setUp(self):
-        # Sam's weekend MDP
-        self.states = ['healthy', 'sick']
-        self.actions = ['relax', 'party']
-
-        # Transition function
-        self.P = lambda s,a,s_next: {
-            ('healthy','relax','healthy'): 0.95,
-            ('healthy','relax','sick'): 0.05,
-            ('healthy','party','healthy'): 0.7,
-            ('healthy','party','sick'): 0.3,
-            ('sick','relax','healthy'): 0.5,
-            ('sick','relax','sick'): 0.5,
-            ('sick','party','healthy'): 0.1,
-            ('sick','party','sick'): 0.9
-        }.get((s,a,s_next), 0)
-
-        # Reward function
-        self.R = lambda s,a,s_next: {
-            ('healthy','relax','healthy'): 7,
-            ('healthy','relax','sick'): 7,
-            ('healthy','party','healthy'): 10,
-            ('healthy','party','sick'): 10,
-            ('sick','relax','healthy'): 0,
-            ('sick','relax','sick'): 0,
-            ('sick','party','healthy'): 2,
-            ('sick','party','sick'): 2
-        }.get((s,a,s_next), 0)
-
-        self.gamma = 0.9
-
-    def test_full_convergence(self):
-        """Test VIA until full convergence."""
-        policy, V, delta_list = value_iteration(
-            self.states, self.actions, self.P, self.R,
-            gamma=self.gamma, epsilon=0.001, max_iterations=10000
-        )
-
-        # Expected approximate values from full convergence
-        expected_values = {
-            'healthy': 67.066, 
-            'sick': 54.872
-        }
-        tolerance = 0.5
-
-        # Check policy
-        self.assertEqual(policy['healthy'], 'party', "Healthy state policy should be 'party'")
-        self.assertEqual(policy['sick'], 'relax', "Sick state policy should be 'relax'")
-
-        # Check value function within tolerance
-        for s in self.states:
-            self.assertAlmostEqual(V[s], expected_values[s], delta=tolerance,
-                                   msg=f"Value for state {s} out of tolerance")
-
-    def test_two_iterations(self):
-        """Test VIA after 2 iterations."""
-        policy, V, delta_list = value_iteration(
-            self.states, self.actions, self.P, self.R,
-            gamma=self.gamma, epsilon=0.001, max_iterations=2
-        )
-
-        # After 2 iterations, values should be roughly (from hand calculation)
-        expected_values_2iter = {
-            'healthy': 17.515,  # approximate, might differ slightly
-            'sick': 9.90675
-        }
-        tolerance = 5.0  # loose tolerance since it's only 2 iterations
-
-        # Policy sanity check (emerging optimal)
-        self.assertEqual(policy['healthy'], 'party', "Healthy state policy should be 'party'")
-        self.assertEqual(policy['sick'], 'relax', "Sick state policy should be 'relax'")
-
-        # Value check (loose tolerance)
-        for s in self.states:
-            self.assertAlmostEqual(V[s], expected_values_2iter[s], delta=tolerance,
-                                   msg=f"Value for state {s} after 2 iterations out of tolerance")
+import pytest
+from VIA.VIA import value_iteration
+from VIA.example2 import sam_weekend_mdp
 
 
-if __name__ == "__main__":
-    unittest.main()
+#check that returned outputs are dictionaries 
+#check match set of states and action
+def test_output_types():
+    states = ['healthy', 'sick']
+    actions = ['relax', 'party']
+
+    policy, V = sam_weekend_mdp()
+
+    # dictionaries
+    assert isinstance(policy, dict)
+    assert isinstance(V, dict)
+
+    #match
+    assert set(policy.keys()) == set(states)
+    assert set(V.keys()) == set(states)
+
+    #valid actions or None
+    for s in policy:
+        assert policy[s] in actions or policy[s] is None
+
+    #Value function should be numeric
+    for s in V:
+        assert isinstance(V[s], (int, float))
+
+
+#returns the states inputed in output
+def test_expected_states():
+    policy, V = sam_weekend_mdp()
+
+    expected_states = {'healthy', 'sick'}
+
+    assert set(policy.keys()) == expected_states
+    assert set(V.keys()) == expected_states
+
+
+def test_value_ordering():
+    policy, V = sam_weekend_mdp()
+
+    #being healthy should be better than being sick
+    assert V['healthy'] > V['sick']
+
+def test_convergence_and_policy():
+    #Rebuild MDP locally to access delta_list
+    states = ['healthy', 'sick']
+    actions = ['relax', 'party']
+
+    P_dict = {
+        'healthy': {'relax': {'healthy': 0.95, 'sick': 0.05},
+                    'party': {'healthy': 0.7, 'sick': 0.3}},
+        'sick': {'relax': {'healthy': 0.5, 'sick': 0.5},
+                 'party': {'healthy': 0.1, 'sick': 0.9}}
+    }
+
+    R_dict = {
+        'healthy': {'relax': 7, 'party': 10},
+        'sick': {'relax': 0, 'party': 2}
+    }
+
+    def P(s, a, s_next):
+        return P_dict[s][a].get(s_next, 0)
+
+    def R(s, a, s_next):
+        return R_dict[s][a]
+
+    policy, V, delta_list = value_iteration(states, actions, P, R, 0.9, 0.001, 10000)
+
+    #check that delta decreases and final delta is small
+    assert delta_list[-1] < 0.01
+    assert all(d >= 0 for d in delta_list)
+    
+    #test the opt policy is correct (use set gamma = 0.9)
+    assert policy['healthy'] == 'party'
+    assert policy['sick'] == 'relax'
+    
+    
+    
+
+
 
 

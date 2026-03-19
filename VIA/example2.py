@@ -5,7 +5,7 @@ Created on Wed Mar 18 10:41:17 2026
 
 @author: stylesj
 """
-from VIA import value_iteration
+from .VIA import value_iteration
 
 
 ##example 2 (ex9.27 from of Artificial Intelligence: Foundations and Computational Agents 2nd edition)

@@ -20,7 +20,7 @@ classifiers = [
 ]
 dependencies = [
     "numpy",
-    "unittest"
+    "pytest"
 ]
 
 [project.urls]

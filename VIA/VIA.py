@@ -39,6 +39,7 @@ def value_iteration(S: List[Any], A: List[Any], P: Callable[ [Any,Any,Any], floa
     Returns:
     V: dictionary of optimal state values
     policy: dictionary of optimal action for each state
+    delts_list: list of delta value to track convergence
     """
     V = {s: 0 for s in S}
     iteration = 0

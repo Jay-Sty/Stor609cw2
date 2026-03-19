@@ -12,7 +12,13 @@ There are three examples:
 
 To install package from github:
 
+(may need to start python: source~/start-pyenv)
+
 python -m pip install 'git+https://github.com/Jay-Sty/Stor609cw2'
+
+to uninstall:
+
+python -m pip uninstall VIA
 
 ## Details of value_iteration function
 
@@ -25,7 +31,7 @@ The function returns the optimals policy, the optimal value of each state and li
 The psudo code for the value_iteration function is slightly different to that given in figure 9.16 of Artificial Intelligence: Foundations and Computational Agents 2nd edition.
 
 - Initialisation: this function initialised all value V to be zero at the start.
-- Convergence and Max iterations: in this function we define termination as untill convergence to some amount epsilon or until a maximum number of iterations is reached.
+- Convergence and Max iterations: in this function we defined termination as untill convergence to some amount epsilon or until a maximum number of iterations is reached.
 - Bellman Equation: The Bellman equation is calulated slightly differenty to account for if reward depends on next state not just current state.
 - Terminal Nodes: This function check for 'terminal nodel' where there is no outgoing actions from the node and therefor does not calculate its value.
 
@@ -47,7 +53,7 @@ Outputs:
     V              : value function for each state
     delta_list     : list of maximum value changes per iteration
 
-1. Initialize V[s] = 0 for all s in S
+1. Initialise V[s] = 0 for all s in S
 2. iteration = 0
 3. delta_list = []
 
@@ -61,7 +67,7 @@ Outputs:
            
            v_old = V[s]
            
-           # Update value using Bellman optimality
+           #Update value using Bellman optimality
            V[s] = max over actions a in A of:
                       sum over s_next in S of:
                           P(s_next | s, a) * ( R(s, a, s_next) + gamma * V[s_next] )
